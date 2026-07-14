@@ -1,0 +1,57 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <span class="eyebrow">Directory</span>
+      <h1>Members</h1>
+    </div>
+    <a routerLink="/members/new" class="btn btn-primary">+ Register member</a>
+  </div>
+
+  <div class="card table-card">
+    <div class="toolbar">
+      <input type="text" placeholder="Search by name or email…" [(ngModel)]="searchTerm" class="search-input" />
+    </div>
+
+    <div class="empty-state" *ngIf="loaded && members.length === 0">
+      <h3>No members yet</h3>
+      <p>Register a member to get started.</p>
+    </div>
+
+    <div class="table-wrap" *ngIf="members.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Joined</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let member of members | filterBy: searchTerm : ['name','email']">
+            <td class="mono">#{{ member.id }}</td>
+            <td><strong>{{ member.name }}</strong></td>
+            <td>{{ member.email }}</td>
+            <td>{{ member.phone }}</td>
+            <td>{{ member.joinedDate }}</td>
+            <td class="row-actions">
+              <a [routerLink]="['/members', member.id, 'edit']" class="btn btn-outline btn-sm">Edit</a>
+              <button class="btn btn-danger btn-sm" (click)="askDelete(member.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<app-confirm-dialog
+  [open]="confirmingDeleteId !== null"
+  title="Remove this member?"
+  message="This will permanently remove the member record."
+  confirmLabel="Delete"
+  (confirmed)="confirmDelete()"
+  (cancelled)="cancelDelete()">
+</app-confirm-dialog>

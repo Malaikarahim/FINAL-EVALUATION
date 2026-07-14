@@ -1,0 +1,65 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <span class="eyebrow">Catalog</span>
+      <h1>Books</h1>
+    </div>
+    <a *ngIf="isAdmin()" routerLink="/books/new" class="btn btn-primary">+ Add book</a>
+  </div>
+
+  <div class="card table-card">
+    <div class="toolbar">
+      <input
+        type="text"
+        placeholder="Search by title, author, or genre…"
+        [(ngModel)]="searchTerm"
+        class="search-input" />
+    </div>
+
+    <div class="empty-state" *ngIf="loaded && books.length === 0">
+      <h3>No books yet</h3>
+      <p>Add your first book to start building the catalog.</p>
+    </div>
+
+    <div class="table-wrap" *ngIf="books.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Availability</th>
+            <th *ngIf="isAdmin()"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let book of books | filterBy: searchTerm : ['title','author','genre']">
+            <td class="mono">#{{ book.id }}</td>
+            <td><strong>{{ book.title }}</strong></td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.genre }}</td>
+            <td>
+              <span class="badge" [ngClass]="book.available > 0 ? 'badge-success' : 'badge-danger'">
+                {{ book.available }} / {{ book.quantity }} available
+              </span>
+            </td>
+            <td *ngIf="isAdmin()" class="row-actions">
+              <a [routerLink]="['/books', book.id, 'edit']" class="btn btn-outline btn-sm">Edit</a>
+              <button class="btn btn-danger btn-sm" (click)="askDelete(book.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<app-confirm-dialog
+  [open]="confirmingDeleteId !== null"
+  title="Remove this book?"
+  message="This will permanently remove the book from the catalog."
+  confirmLabel="Delete"
+  (confirmed)="confirmDelete()"
+  (cancelled)="cancelDelete()">
+</app-confirm-dialog>

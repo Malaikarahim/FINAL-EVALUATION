@@ -1,0 +1,33 @@
+<aside class="sidebar" [class.collapsed]="isCollapsed">
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="glow glow-3"></div>
+
+  <div class="sidebar-header">
+    <div class="catalog-label">
+      <span class="eyebrow">Catalog</span>
+      <span>Navigation</span>
+    </div>
+    <button
+      type="button"
+      class="toggle-btn"
+      (click)="toggleSidebar()"
+      [attr.aria-label]="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+    >
+      <span class="toggle-icon" [class.rotated]="isCollapsed">&#8592;</span>
+    </button>
+  </div>
+
+  <nav>
+    <a *ngFor="let item of visibleItems"
+       [routerLink]="item.route"
+       routerLinkActive="active"
+       class="nav-item"
+       [style.--tag-color]="item.tag"
+       [title]="item.label">
+      <span class="ribbon"></span>
+      <span class="tag-dot"></span>
+      <span class="nav-label">{{ item.label }}</span>
+    </a>
+  </nav>
+</aside>

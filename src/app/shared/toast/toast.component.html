@@ -1,0 +1,9 @@
+<div class="toast-stack">
+  <div
+    *ngFor="let toast of toastService.toasts$ | async"
+    class="toast"
+    [ngClass]="toast.type"
+    (click)="toastService.dismiss(toast.id)">
+    {{ toast.message }}
+  </div>
+</div>

@@ -1,0 +1,65 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <span class="eyebrow">Circulation</span>
+      <h1>Borrow &amp; Return Requests</h1>
+    </div>
+    <a *ngIf="!isAdmin()" routerLink="/requests/new" class="btn btn-primary">+ New borrow request</a>
+  </div>
+
+  <div class="card table-card" *ngIf="loaded">
+    <div class="empty-state" *ngIf="requests.length === 0">
+      <h3>No requests yet</h3>
+      <p *ngIf="isAdmin()">Member borrow and return requests will show up here.</p>
+      <p *ngIf="!isAdmin()">Request a book to get started.</p>
+    </div>
+
+    <div class="table-wrap" *ngIf="requests.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Book</th>
+            <th *ngIf="isAdmin()">Member</th>
+            <th>Issue date</th>
+            <th>Due date</th>
+            <th>Requested on</th>
+            <th>Status</th>
+            <th *ngIf="isAdmin()"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let req of requests">
+            <td class="mono">#{{ req.id }}</td>
+            <td>
+              <span class="badge" [ngClass]="{ 'badge-info': req.type === 'Borrow', 'badge-warning': req.type === 'Return' }">
+                {{ req.type }}
+              </span>
+            </td>
+            <td><strong>{{ req.bookTitle }}</strong></td>
+            <td *ngIf="isAdmin()">{{ req.memberName }}</td>
+            <td>{{ req.issueDate || '—' }}</td>
+            <td>{{ req.dueDate || '—' }}</td>
+            <td>{{ req.requestDate }}</td>
+            <td>
+              <span class="badge" [ngClass]="{
+                'badge-success': req.status === 'Approved',
+                'badge-danger': req.status === 'Rejected',
+                'badge-info': req.status === 'Pending'
+              }">{{ req.status }}</span>
+            </td>
+            <td *ngIf="isAdmin()" class="row-actions">
+              <ng-container *ngIf="req.status === 'Pending'">
+                <button class="btn btn-outline btn-sm" [disabled]="processingId === req.id" (click)="approve(req)">
+                  {{ processingId === req.id ? 'Processing…' : 'Approve' }}
+                </button>
+                <button class="btn btn-danger btn-sm" [disabled]="processingId === req.id" (click)="reject(req)">Reject</button>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="page narrow">
+  <div class="page-header">
+    <div>
+      <span class="eyebrow">{{ isEditMode ? 'Edit' : 'New entry' }}</span>
+      <h1>{{ isEditMode ? 'Edit member' : 'Register member' }}</h1>
+    </div>
+  </div>
+
+  <form class="card form-card" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="field">
+      <label for="name">Full name</label>
+      <input id="name" type="text" formControlName="name" [class.invalid]="submitted && f['name'].invalid" placeholder="e.g. Priya Sharma" />
+      <div class="error-text" *ngIf="submitted && f['name'].errors?.['required']">Name is required.</div>
+    </div>
+
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" [class.invalid]="submitted && f['email'].invalid" placeholder="e.g. priya@mail.com" />
+      <div class="error-text" *ngIf="submitted && f['email'].errors?.['required']">Email is required.</div>
+      <div class="error-text" *ngIf="submitted && f['email'].errors?.['email']">Enter a valid email address.</div>
+    </div>
+
+    <div class="field">
+      <label for="phone">Phone number</label>
+      <input id="phone" type="text" formControlName="phone" [class.invalid]="submitted && f['phone'].invalid" placeholder="10-digit number" />
+      <div class="error-text" *ngIf="submitted && f['phone'].errors?.['required']">Phone number is required.</div>
+      <div class="error-text" *ngIf="submitted && f['phone'].errors?.['pattern']">Enter a valid 10-digit phone number.</div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-outline" (click)="cancel()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="saving">{{ saving ? 'Saving…' : 'Save member' }}</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,102 @@
+.form-card {
+  padding: 28px;
+  max-width: 480px;
+}
+
+.field {
+  margin-bottom: 20px;
+}
+
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+  margin-bottom: 6px;
+}
+
+.field select,
+.field input[type="date"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border, #e7e0d4);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  background: #fff;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+}
+
+.field select:focus,
+.field input[type="date"]:focus {
+  outline: none;
+  border-color: #1B4332;
+  box-shadow: 0 0 0 3px rgba(27, 67, 50, 0.12);
+}
+
+.field select.invalid,
+.field input.invalid {
+  border-color: #A4342A;
+}
+
+.hint-text {
+  font-size: 12px;
+  color: var(--color-ink-soft);
+  margin-top: 6px;
+}
+
+.error-text {
+  font-size: 12px;
+  color: #A4342A;
+  margin-top: 6px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.form-actions .btn {
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.form-actions .btn-outline {
+  background: transparent;
+  border: 1px solid var(--color-border, #e7e0d4);
+  color: var(--color-ink, #2b2620);
+}
+
+.form-actions .btn-outline:hover {
+  background: #f5f1e8;
+}
+
+.form-actions .btn-primary {
+  background: #1B4332;
+  color: #fff;
+}
+
+.form-actions .btn-primary:hover {
+  background: #163a2a;
+}
+
+.form-actions .btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .form-card {
+    padding: 20px;
+  }
+}

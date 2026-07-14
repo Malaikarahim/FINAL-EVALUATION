@@ -1,0 +1,327 @@
+<div class="page" *ngIf="loaded">
+
+  <div class="page-header">
+
+    <div>
+
+      <span class="eyebrow">Overview</span>
+
+      <h1>
+        Welcome back{{ auth.currentUserValue ? ', ' + auth.currentUserValue!.name : '' }}
+      </h1>
+
+    </div>
+
+    <!-- Admin Only Buttons -->
+    <div
+      class="quick-nav"
+      *ngIf="auth.getRole() === 'admin'">
+
+      <a
+        routerLink="/books"
+        class="btn btn-outline btn-sm">
+
+        Manage Books
+
+      </a>
+
+      <a
+        routerLink="/borrow"
+        class="btn btn-primary btn-sm">
+
+        Issue / Return
+
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- ===========================
+       Dashboard Cards
+  ============================ -->
+
+  <div class="stat-grid">
+
+    <!-- Total Books -->
+
+    <div
+      class="stat-card card"
+      data-letter="B">
+
+      <span class="stat-label">
+
+        Total Books
+
+      </span>
+
+      <span class="stat-value">
+
+        {{ totalBooks }}
+
+      </span>
+
+      <span class="stat-sub">
+
+        {{ totalCopies }} copies in library
+
+      </span>
+
+    </div>
+
+    <!-- ===========================
+         ADMIN DASHBOARD
+    ============================ -->
+
+    <ng-container *ngIf="auth.getRole() === 'admin'; else memberDashboard">
+
+      <div
+        class="stat-card card"
+        data-letter="M">
+
+        <span class="stat-label">
+
+          Total Members
+
+        </span>
+
+        <span class="stat-value">
+
+          {{ totalMembers }}
+
+        </span>
+
+        <span class="stat-sub">
+
+          Registered Readers
+
+        </span>
+
+      </div>
+
+      <div
+        class="stat-card card"
+        data-letter="A">
+
+        <span class="stat-label">
+
+          Available Copies
+
+        </span>
+
+        <span class="stat-value">
+
+          {{ availableCopies }}
+
+        </span>
+
+        <span class="stat-sub">
+
+          Ready to Issue
+
+        </span>
+
+      </div>
+
+      <div
+        class="stat-card card"
+        [class.alert]="overdueCount > 0"
+        data-letter="O">
+
+        <span class="stat-label">
+
+          Borrowed Copies
+
+        </span>
+
+        <span class="stat-value">
+
+          {{ borrowedCopies }}
+
+        </span>
+
+        <span class="stat-sub">
+
+          {{ overdueCount }} Overdue
+
+        </span>
+
+      </div>
+
+    </ng-container>
+
+    <!-- ===========================
+         MEMBER DASHBOARD
+    ============================ -->
+
+    <ng-template #memberDashboard>
+
+      <div
+        class="stat-card card"
+        data-letter="A">
+
+        <span class="stat-label">
+
+          Available Copies
+
+        </span>
+
+        <span class="stat-value">
+
+          {{ availableCopies }}
+
+        </span>
+
+        <span class="stat-sub">
+
+          Ready to Borrow
+
+        </span>
+
+      </div>
+
+      <div
+        class="stat-card card"
+        data-letter="B">
+
+        <span class="stat-label">
+
+          My Borrowed Books
+
+        </span>
+
+        <span class="stat-value">
+
+          {{ myBorrowedBooks }}
+
+        </span>
+
+        <span class="stat-sub">
+
+          Currently Borrowed
+
+        </span>
+
+      </div>
+
+      <div
+        class="stat-card card"
+        data-letter="P">
+
+        <span class="stat-label">
+
+          Pending Requests
+
+        </span>
+
+        <span class="stat-value">
+
+          {{ myPendingRequests }}
+
+        </span>
+
+        <span class="stat-sub">
+
+          Waiting for Approval
+
+        </span>
+
+      </div>
+
+    </ng-template>
+
+  </div>
+
+  <!-- ===========================
+       Recent Activity
+  ============================ -->
+
+  <div class="card activity-card">
+
+    <div class="activity-header">
+
+      <h3>
+
+        {{ auth.getRole() === 'admin'
+          ? 'Recent Borrow Activity'
+          : 'My Borrow History' }}
+
+      </h3>
+
+      <a
+        routerLink="/borrow"
+        class="btn btn-outline btn-sm">
+
+        View All
+
+      </a>
+
+    </div>
+
+    <div
+      class="empty-state"
+      *ngIf="recentActivity.length === 0">
+
+      <h3>
+
+        No Activity Yet
+
+      </h3>
+
+      <p>
+
+        {{
+          auth.getRole() === 'admin'
+            ? 'Issue a book to see activity here.'
+            : 'Borrow a book to see your history here.'
+        }}
+
+      </p>
+
+    </div>
+
+    <ul
+      class="activity-list"
+      *ngIf="recentActivity.length > 0">
+
+      <li *ngFor="let item of recentActivity">
+
+        <div>
+
+          <strong>
+
+            {{ item.label }}
+
+          </strong>
+
+          <span>
+
+            {{ item.detail }}
+
+          </span>
+
+        </div>
+
+        <span
+          class="badge"
+          [ngClass]="{
+
+            'badge-danger': item.status === 'Overdue',
+
+            'badge-success': item.status === 'Returned',
+
+            'badge-info': item.status === 'Issued'
+
+          }">
+
+          {{ item.status }}
+
+        </span>
+
+      </li>
+
+    </ul>
+
+  </div>
+
+</div>

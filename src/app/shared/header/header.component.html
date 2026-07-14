@@ -1,0 +1,34 @@
+<header class="app-header">
+  <div class="brand">
+    <span class="brand-mark">LB</span>
+    <div class="brand-text">
+      <strong>Bindery</strong>
+      <span>Library Management</span>
+    </div>
+  </div>
+
+  <div class="header-right" *ngIf="auth.currentUser$ | async as user">
+    <div class="user-chip">
+      <span class="avatar">{{ user.name.charAt(0) }}</span>
+      <div class="user-meta">
+        <strong>{{ user.name }}</strong>
+        <span class="role">{{ user.role }}</span>
+      </div>
+    </div>
+    <button class="btn btn-outline btn-sm" (click)="logout()">Log out</button>
+  </div>
+</header>
+
+<!-- Logout popup — no Continue button, auto-dismisses and redirects -->
+<div class="logout-overlay" *ngIf="showLogoutOverlay">
+  <div class="logout-card">
+    <div class="logout-icon">
+      <svg viewBox="0 0 52 52" fill="none">
+        <circle class="logout-icon-ring" cx="26" cy="26" r="24" />
+        <path class="logout-icon-check" d="M15 27 L23 35 L38 18" />
+      </svg>
+    </div>
+    <h2>You're logged out</h2>
+    <p>See you next time.</p>
+  </div>
+</div>

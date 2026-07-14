@@ -1,0 +1,203 @@
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: #fff;
+  border-bottom: 1px solid var(--color-border, #e7e0d4);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: #1B4332;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.brand-text strong {
+  font-size: 14px;
+  color: var(--color-ink, #2b2620);
+}
+
+.brand-text span {
+  font-size: 11px;
+  color: var(--color-ink-soft, #79726480);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f0e6d2;
+  color: #b5652f;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.user-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.user-meta strong {
+  font-size: 13px;
+  color: var(--color-ink, #2b2620);
+}
+
+.user-meta .role {
+  font-size: 11px;
+  color: var(--color-ink-soft, #79726480);
+  text-transform: capitalize;
+}
+
+.header-right .btn-outline {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid var(--color-border, #e7e0d4);
+  background: transparent;
+  color: var(--color-ink, #2b2620);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.header-right .btn-outline:hover {
+  background: #f5f1e8;
+}
+
+/* ================================================================
+   LOGOUT POPUP — auto-dismisses, no Continue button
+   ================================================================ */
+
+.logout-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  background: rgba(24, 20, 14, 0.55);
+  backdrop-filter: blur(3px);
+  animation: logout-backdrop-fade 0.2s ease-out;
+}
+
+@keyframes logout-backdrop-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.logout-card {
+  width: 100%;
+  max-width: 320px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 34px 28px;
+  text-align: center;
+  box-shadow:
+    0 32px 64px -16px rgba(24, 20, 14, 0.4),
+    0 0 0 1px rgba(24, 20, 14, 0.05);
+  animation: logout-card-in 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+@keyframes logout-card-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.94); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.logout-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+}
+
+.logout-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.logout-icon-ring {
+  fill: none;
+  stroke: #79726480;
+  stroke-width: 2.5;
+  stroke-dasharray: 151;
+  stroke-dashoffset: 151;
+  animation: logout-ring-draw 0.5s ease-out forwards;
+}
+
+.logout-icon-check {
+  fill: none;
+  stroke: #79726480;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 34;
+  stroke-dashoffset: 34;
+  animation: logout-check-draw 0.35s ease-out 0.4s forwards;
+}
+
+@keyframes logout-ring-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes logout-check-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+.logout-card h2 {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 20px;
+  margin: 0 0 6px;
+  color: var(--color-ink, #2b2620);
+  animation: logout-fade-in 0.3s ease-out 0.15s both;
+}
+
+.logout-card p {
+  font-size: 13px;
+  color: var(--color-ink-soft, #79726480);
+  margin: 0;
+  animation: logout-fade-in 0.3s ease-out 0.2s both;
+}
+
+@keyframes logout-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

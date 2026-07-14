@@ -1,0 +1,64 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <span class="eyebrow">Circulation</span>
+      <h1>Borrow &amp; Return Requests</h1>
+    </div>
+  </div>
+
+  <div class="card table-card" *ngIf="loaded">
+    <div class="empty-state" *ngIf="requests.length === 0">
+      <h3>No requests yet</h3>
+      <p *ngIf="isAdmin()">Member borrow and return requests will show up here.</p>
+      <p *ngIf="!isAdmin()">You haven't sent any borrow or return requests yet.</p>
+    </div>
+
+    <div class="table-wrap" *ngIf="requests.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-id">ID</th>
+            <th class="col-type">Type</th>
+            <th class="col-book">Book</th>
+            <th class="col-member" *ngIf="isAdmin()">Member</th>
+            <th class="col-issued">Issue date</th>
+            <th class="col-due">Due date</th>
+            <th class="col-requested">Requested on</th>
+            <th class="col-status">Status</th>
+            <th class="col-actions" *ngIf="isAdmin()"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let req of requests">
+            <td class="col-id mono">#{{ req.id }}</td>
+            <td class="col-type">
+              <span class="badge" [ngClass]="{ 'badge-info': req.type === 'Borrow', 'badge-warning': req.type === 'Return' }">
+                {{ req.type }}
+              </span>
+            </td>
+            <td class="col-book"><strong>{{ req.bookTitle }}</strong></td>
+            <td class="col-member" *ngIf="isAdmin()">{{ req.memberName }}</td>
+            <td class="col-issued cell-date">{{ req.issueDate || '—' }}</td>
+            <td class="col-due cell-date">{{ req.dueDate || '—' }}</td>
+            <td class="col-requested cell-date">{{ req.requestDate }}</td>
+            <td class="col-status">
+              <span class="badge" [ngClass]="{
+                'badge-success': req.status === 'Approved',
+                'badge-danger': req.status === 'Rejected',
+                'badge-info': req.status === 'Pending'
+              }">{{ req.status }}</span>
+            </td>
+            <td class="col-actions row-actions" *ngIf="isAdmin()">
+              <ng-container *ngIf="req.status === 'Pending'">
+                <button class="btn btn-outline btn-sm" [disabled]="processingId === req.id" (click)="approve(req)">
+                  {{ processingId === req.id ? 'Processing…' : 'Approve' }}
+                </button>
+                <button class="btn btn-danger btn-sm" [disabled]="processingId === req.id" (click)="reject(req)">Reject</button>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

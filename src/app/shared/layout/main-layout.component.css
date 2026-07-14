@@ -1,0 +1,110 @@
+/* ============================================
+   HOST + SHELL
+   ============================================ */
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.shell {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  min-height: calc(100vh - 64px);
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Ambient reading-room wash behind the whole shell.
+   FIX: was `position: fixed` which paints over the ENTIRE viewport
+   (including <app-header> and <app-footer>, which sit outside
+   .shell in the DOM) because .shell has `isolation: isolate`,
+   putting this pseudo-element's stacking above the header despite
+   z-index: -1. Changed to `position: absolute` so it's confined
+   to .shell's own box instead of the whole screen. */
+.shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(560px 420px at 8% 10%, rgba(27, 67, 50, 0.10), transparent 60%),
+    radial-gradient(520px 460px at 92% 22%, rgba(192, 138, 62, 0.12), transparent 60%),
+    radial-gradient(600px 500px at 15% 92%, rgba(47, 93, 120, 0.10), transparent 60%),
+    radial-gradient(480px 420px at 96% 88%, rgba(164, 52, 42, 0.08), transparent 60%),
+    var(--color-paper);
+  pointer-events: none;
+}
+
+/* ============================================
+   MAIN CONTENT
+   ============================================ */
+.content {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  position: relative;
+  z-index: 1;
+  animation: content-fade-in 0.35s ease both;
+}
+
+@keyframes content-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Subtle inner divider so content doesn't merge flush
+   into the glass sidebar edge */
+.content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-border) 12%,
+    var(--color-border) 88%,
+    transparent
+  );
+}
+
+/* ============================================
+   SCROLLBAR — quiet, library-card style
+   ============================================ */
+.content::-webkit-scrollbar {
+  width: 10px;
+}
+.content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.content::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.content::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink-soft);
+  background-clip: padding-box;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 720px) {
+  .shell {
+    flex-direction: column;
+  }
+  .content::before {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .content {
+    animation: none;
+  }
+}

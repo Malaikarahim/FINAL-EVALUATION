@@ -1,0 +1,66 @@
+<div class="login-screen">
+  <div class="login-card card">
+    <div class="login-brand">
+      <span class="brand-mark">LB</span>
+      <h1>library</h1>
+      <p>Sign in to manage the library</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          [class.invalid]="submitted && f['email'].invalid"
+          placeholder="you@library.com" />
+        <div class="error-text" *ngIf="submitted && f['email'].errors?.['required']">Email is required.</div>
+        <div class="error-text" *ngIf="submitted && f['email'].errors?.['email']">Enter a valid email address.</div>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          [class.invalid]="submitted && f['password'].invalid"
+          placeholder="••••••••" />
+        <div class="error-text" *ngIf="submitted && f['password'].errors?.['required']">Password is required.</div>
+        <div class="error-text" *ngIf="submitted && f['password'].errors?.['minlength']">Password must be at least 6 characters.</div>
+      </div>
+
+      <button class="btn btn-primary" type="submit" style="width: 100%; justify-content: center;" [disabled]="submitting">
+        {{ submitting ? 'Signing in…' : 'Sign in' }}
+      </button>
+    </form>
+
+    <div class="demo-accounts">
+      <span>Try a demo account:</span>
+      <div class="demo-buttons">
+        <button type="button" class="btn btn-outline btn-sm" (click)="fillDemo('admin')">Admin</button>
+        <button type="button" class="btn btn-outline btn-sm" (click)="fillDemo('member')">Member</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Welcome popup — shown right after successful login -->
+<div class="welcome-overlay" *ngIf="showWelcome">
+  <div class="welcome-card" [ngClass]="welcomeRole === 'admin' ? 'role-admin' : 'role-member'">
+    <div class="welcome-icon">
+      <svg viewBox="0 0 52 52" fill="none">
+        <circle class="welcome-icon-ring" cx="26" cy="26" r="24" />
+        <path class="welcome-icon-check" d="M15 27 L23 35 L38 18" />
+      </svg>
+    </div>
+
+    <div class="welcome-role-badge">{{ welcomeRole === 'admin' ? 'Admin' : 'Member' }}</div>
+    <h2>You're logged in{{ welcomeName ? ', ' + welcomeName : '' }}!</h2>
+    <p>
+      Signed in as
+      <strong>{{ welcomeRole === 'admin' ? 'Administrator' : 'Library Member' }}</strong>
+    </p>
+  </div>
+</div>

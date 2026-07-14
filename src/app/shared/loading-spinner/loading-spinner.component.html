@@ -1,0 +1,6 @@
+<div class="overlay" *ngIf="(loading.isLoading$ | async)! > 0">
+  <div class="spinner-card">
+    <div class="spinner"></div>
+    <span class="spinner-label">Fetching your Content…</span>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<div class="page narrow">
+  <div class="page-header">
+    <div>
+      <span class="eyebrow">{{ isEditMode ? 'Edit' : 'New entry' }}</span>
+      <h1>{{ isEditMode ? 'Edit book' : 'Add book' }}</h1>
+    </div>
+  </div>
+
+  <form class="card form-card" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="field">
+      <label for="title">Title</label>
+      <input id="title" type="text" formControlName="title" [class.invalid]="submitted && f['title'].invalid" placeholder="e.g. Clean Code" />
+      <div class="error-text" *ngIf="submitted && f['title'].errors?.['required']">Title is required.</div>
+    </div>
+
+    <div class="field">
+      <label for="author">Author</label>
+      <input id="author" type="text" formControlName="author" [class.invalid]="submitted && f['author'].invalid" placeholder="e.g. Robert C. Martin" />
+      <div class="error-text" *ngIf="submitted && f['author'].errors?.['required']">Author is required.</div>
+    </div>
+
+    <div class="field">
+      <label for="genre">Genre</label>
+      <select id="genre" formControlName="genre" [class.invalid]="submitted && f['genre'].invalid">
+        <option value="" disabled>Select a genre</option>
+        <option *ngFor="let g of genres" [value]="g">{{ g }}</option>
+      </select>
+      <div class="error-text" *ngIf="submitted && f['genre'].errors?.['required']">Genre is required.</div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="quantity">Total quantity</label>
+        <input id="quantity" type="number" min="1" formControlName="quantity" [class.invalid]="submitted && f['quantity'].invalid" />
+        <div class="error-text" *ngIf="submitted && f['quantity'].errors?.['required']">Quantity is required.</div>
+        <div class="error-text" *ngIf="submitted && f['quantity'].errors?.['min']">Must be at least 1.</div>
+      </div>
+
+      <div class="field">
+        <label for="available">Available copies</label>
+        <input id="available" type="number" min="0" formControlName="available" [class.invalid]="submitted && f['available'].invalid" />
+        <div class="error-text" *ngIf="submitted && f['available'].errors?.['required']">Available copies is required.</div>
+        <div class="error-text" *ngIf="submitted && f['available'].errors?.['exceedsQuantity']">Cannot exceed total quantity.</div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-outline" (click)="cancel()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="saving">{{ saving ? 'Saving…' : 'Save book' }}</button>
+    </div>
+  </form>
+</div>

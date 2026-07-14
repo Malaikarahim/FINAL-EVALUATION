@@ -1,0 +1,68 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <span class="eyebrow">Circulation</span>
+      <h1>Borrow &amp; Return</h1>
+    </div>
+    <a *ngIf="!isAdmin()" routerLink="/borrow/new" class="btn btn-primary">+ Borrow a book</a>
+    <a *ngIf="!isAdmin()" routerLink="/borrow/approvals" class="btn btn-outline">My requests</a>
+    <a *ngIf="isAdmin()" routerLink="/borrow/approvals" class="btn btn-primary">View pending requests</a>
+  </div>
+
+  <div class="card table-card" *ngIf="loaded">
+    <div class="empty-state" *ngIf="records.length === 0">
+      <h3>No borrow records</h3>
+      <p *ngIf="isAdmin()">Approved borrow requests will show up here.</p>
+      <p *ngIf="!isAdmin()">You don't have any borrowed books yet. Send a borrow request to get started.</p>
+    </div>
+
+    <div class="table-wrap" *ngIf="records.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-book">Book</th>
+            <th class="col-member" *ngIf="isAdmin()">Member</th>
+            <th class="col-issued">Issued</th>
+            <th class="col-due">Due</th>
+            <th class="col-status">Status</th>
+            <th class="col-fine">Fine</th>
+            <th class="col-actions" *ngIf="!isAdmin()"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of records">
+            <td class="col-book"><strong>{{ record.bookTitle }}</strong></td>
+            <td class="col-member" *ngIf="isAdmin()">{{ record.memberName }}</td>
+            <td class="col-issued cell-date">{{ record.issueDate }}</td>
+            <td class="col-due cell-date">{{ record.dueDate }}</td>
+            <td class="col-status">
+              <span class="badge" [ngClass]="{
+                'badge-danger': record.status === 'Overdue',
+                'badge-success': record.status === 'Returned',
+                'badge-info': record.status === 'Issued'
+              }">{{ record.status }}</span>
+            </td>
+            <td class="col-fine">
+              <span *ngIf="getDisplayFine(record) > 0; else noFine" class="fine-amount">
+                ₹{{ getDisplayFine(record) }}
+              </span>
+              <ng-template #noFine>—</ng-template>
+            </td>
+            <td class="col-actions row-actions" *ngIf="!isAdmin()">
+              <button
+                *ngIf="record.status !== 'Returned' && !hasPendingReturnRequest(record)"
+                class="btn btn-outline btn-sm"
+                [disabled]="requestingReturnId === record.id"
+                (click)="requestReturn(record)">
+                {{ requestingReturnId === record.id ? 'Sending…' : 'Request return' }}
+              </button>
+              <span *ngIf="record.status !== 'Returned' && hasPendingReturnRequest(record)" class="hint-text">
+                Return requested — awaiting approval
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

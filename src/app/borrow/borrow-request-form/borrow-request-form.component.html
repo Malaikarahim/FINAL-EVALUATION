@@ -1,0 +1,50 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <span class="eyebrow">Circulation</span>
+      <h1>Borrow a book</h1>
+    </div>
+  </div>
+
+  <div class="card form-card" *ngIf="loaded">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="field">
+        <label for="bookId">Book</label>
+        <select id="bookId" formControlName="bookId" [class.invalid]="submitted && f['bookId'].invalid">
+          <option [ngValue]="null" disabled>Select a book</option>
+          <option *ngFor="let book of availableBooks" [ngValue]="book.id">
+            {{ book.title }} — {{ book.author }} ({{ book.available - 1 }} available)
+          </option>
+        </select>
+        <div class="error-text" *ngIf="submitted && f['bookId'].errors?.['required']">Select a book.</div>
+        <div class="hint-text" *ngIf="books.length > 0 && availableBooks.length === 0">
+          No titles are currently available to borrow.
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="issueDate">Issue date</label>
+        <input id="issueDate" type="date" formControlName="issueDate" [min]="minIssueDate"
+               [class.invalid]="submitted && f['issueDate'].invalid" />
+        <div class="error-text" *ngIf="submitted && f['issueDate'].errors?.['required']">Issue date is required.</div>
+      </div>
+
+      <div class="field">
+        <label for="dueDate">Due date</label>
+        <input id="dueDate" type="date" formControlName="dueDate" [min]="minDueDate" [max]="maxDueDate"
+               [class.invalid]="submitted && (f['dueDate'].invalid || form.errors)" />
+        <div class="hint-text">Between {{ minDueDate }} and {{ maxDueDate }} (max 2 weeks from issue date).</div>
+        <div class="error-text" *ngIf="submitted && f['dueDate'].errors?.['required']">Due date is required.</div>
+        <div class="error-text" *ngIf="submitted && form.errors?.['dueBeforeIssue']">Due date can't be before the issue date.</div>
+        <div class="error-text" *ngIf="submitted && form.errors?.['dueTooFar']">Due date can be at most 2 weeks after the issue date.</div>
+      </div>
+
+      <div class="form-actions">
+        <a routerLink="/borrow" class="btn btn-outline">Cancel</a>
+        <button type="submit" class="btn btn-primary" [disabled]="submitting">
+          {{ submitting ? 'Sending…' : 'Send request' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

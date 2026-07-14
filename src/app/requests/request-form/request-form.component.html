@@ -1,0 +1,34 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <span class="eyebrow">Catalog</span>
+      <h1>Request a book</h1>
+    </div>
+  </div>
+
+  <div class="card form-card">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="field">
+        <label for="title">Title</label>
+        <input id="title" type="text" formControlName="title" placeholder="e.g. The Hobbit" />
+      </div>
+
+      <div class="field">
+        <label for="author">Author (optional)</label>
+        <input id="author" type="text" formControlName="author" placeholder="e.g. J.R.R. Tolkien" />
+      </div>
+
+      <div class="field">
+        <label for="reason">Why do you want this book? (optional)</label>
+        <textarea id="reason" formControlName="reason" rows="3" placeholder="Add a short note for the librarian…"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <a routerLink="/requests" class="btn btn-outline">Cancel</a>
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid || submitting">
+          {{ submitting ? 'Submitting…' : 'Submit request' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

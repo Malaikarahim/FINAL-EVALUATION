@@ -1,0 +1,106 @@
+/* ============================================
+   OVERLAY — frosted glass backdrop
+   ============================================ */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(250, 247, 242, 0.5);
+  backdrop-filter: blur(6px) saturate(140%);
+  -webkit-backdrop-filter: blur(6px) saturate(140%);
+  animation: overlay-in 0.2s ease both;
+}
+
+@keyframes overlay-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ============================================
+   CARD — small frosted housing for the spinner,
+   so it reads as a deliberate moment, not a
+   spinner floating alone mid-screen
+   ============================================ */
+.spinner-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 28px 34px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 12px 32px rgba(27, 67, 50, 0.1);
+  animation: card-pop 0.25s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+
+@keyframes card-pop {
+  from { opacity: 0; transform: scale(0.92) translateY(4px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ============================================
+   SPINNER — two rings turning opposite ways,
+   in the same green/amber pairing used across
+   the sidebar and dashboard
+   ============================================ */
+.spinner {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+
+.spinner::before,
+.spinner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid transparent;
+}
+
+.spinner::before {
+  border-top-color: #1B4332;
+  border-right-color: #1B4332;
+  animation: spin 0.9s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.spinner::after {
+  inset: 7px;
+  border-bottom-color: #C08A3E;
+  border-left-color: #C08A3E;
+  animation: spin-reverse 0.75s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-reverse {
+  to { transform: rotate(-360deg); }
+}
+
+/* ============================================
+   LABEL
+   ============================================ */
+.spinner-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner::before,
+  .spinner::after {
+    animation-duration: 1.6s;
+  }
+  .overlay,
+  .spinner-card {
+    animation: none;
+  }
+}
